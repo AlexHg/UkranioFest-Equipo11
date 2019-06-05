@@ -1,6 +1,7 @@
 #define MG_ENABLE_HTTP_STREAMING_MULTIPART 1
 #include "mongoose.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <iostream>
 #include <string>
 #include "SocketDatagrama.h"
@@ -38,10 +39,12 @@ static void handle_size(struct mg_connection *nc, struct http_message *hm) {
 }
 
 static void ev_handler(struct mg_connection *nc, int ev, void *p) {
-	char file1[32767];
-	char file2[32767];
-	/*String file1;
-	String file2;*/
+	static char file1[160000];
+	static char file2[160000];
+
+	//char *file1 = (char*)malloc(160000*sizeof(char));
+	//char *file2 = (char*)malloc(160000*sizeof(char));
+
  	struct http_message *hm = (struct http_message *) p;
 
 	if (ev == MG_EV_HTTP_REQUEST) {
@@ -51,10 +54,12 @@ static void ev_handler(struct mg_connection *nc, int ev, void *p) {
 			mg_get_http_var(&hm->body, "file1", file1, sizeof(file1) );
 			mg_get_http_var(&hm->body, "file2", file2, sizeof(file2) );
 
-			std::cout << "Archivo1: " << file1 << '\n';
-			std::cout << "Archivo2: " << file2 << '\n';
 
-		  	handle_size(nc, hm);
+			std::cout << "LCS: " << "Palabra" << '\n';
+			//std::cout << "Archivo1: " << file1 << '\n';
+			//std::cout << "Archivo2: " << file2 << '\n';
+
+		  	//handle_size(nc, hm);
 		}else{
 			mg_serve_http(nc, (struct http_message *) p, s_http_server_opts);
 		}
