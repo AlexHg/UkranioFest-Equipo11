@@ -2,7 +2,7 @@
 #include "mongoose.h"
 #include <stdio.h>
 #include <iostream>
-# include <string>
+#include <string>
 #include "SocketDatagrama.h"
 
 
@@ -24,8 +24,8 @@ static void handle_size(struct mg_connection *nc, struct http_message *hm) {
 	  PaqueteDatagrama p((char*)num,sizeof(num),query,7200);
 	  cout<<"Test "<<num<<"\n";
 	  SocketDatagrama s(0);
-	 s.setBroadcast();
-	 s.envia(p);
+		s.setBroadcast();
+		s.envia(p);
 	  while(1){
 	  	PaqueteDatagrama r(sizeof(num));
 	  	int res=s.recibe(r);
@@ -39,17 +39,23 @@ static void handle_size(struct mg_connection *nc, struct http_message *hm) {
 }
 
 static void ev_handler(struct mg_connection *nc, int ev, void *p) {
-	char query[256];
+	char file1[32767];
+	char file2[32767];
+	/*String file1;
+	String file2;*/
  	struct http_message *hm = (struct http_message *) p;
 
-
 	if (ev == MG_EV_HTTP_REQUEST) {
-		if (mg_vcmp(&hm->uri, "/search") == 0) {
+		if (mg_vcmp(&hm->uri, "/sendfile") == 0) {
+			printf("hola\n");
 
-			mg_get_http_var(&hm->body, "query", query,sizeof(query));
-			std::cout << "Cadena introducida: " << query << '\n';
+			mg_get_http_var(&hm->body, "file1", file1, sizeof(file1) );
+			mg_get_http_var(&hm->body, "file2", file2, sizeof(file2) );
 
-		    handle_size(nc, hm);
+			std::cout << "Archivo1: " << file1 << '\n';
+			std::cout << "Archivo2: " << file2 << '\n';
+
+		  handle_size(nc, hm);
 		}else{
 			mg_serve_http(nc, (struct http_message *) p, s_http_server_opts);
 		}
