@@ -42,6 +42,8 @@ static void ev_handler(struct mg_connection *nc, int ev, void *p) {
 	static char file1[160000];
 	static char file2[160000];
 
+	
+
 	//char *file1 = (char*)malloc(160000*sizeof(char));
 	//char *file2 = (char*)malloc(160000*sizeof(char));
 
@@ -54,7 +56,9 @@ static void ev_handler(struct mg_connection *nc, int ev, void *p) {
 			mg_get_http_var(&hm->body, "file1", file1, sizeof(file1) );
 			mg_get_http_var(&hm->body, "file2", file2, sizeof(file2) );
 
-
+			string file1s(file1);
+			string file2s(file2);
+			
 			std::cout << "LCS: " << "Palabra" << '\n';
 			//std::cout << "Archivo1: " << file1 << '\n';
 			//std::cout << "Archivo2: " << file2 << '\n';
