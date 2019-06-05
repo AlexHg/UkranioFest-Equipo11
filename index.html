@@ -1,0 +1,107 @@
+<html>
+	<head>
+		<title>Mongoose REST</title>
+		<script src="jquery.min.js"></script>
+	</head>
+	<body style="font-family:arial;">
+		<div style="text-align:center">
+			<h1>Proyecto Final</h1>
+			<form method=get id="form-search" class="block">
+				<h2>Introduzca cadena</h2>
+				<input type="file" id="search"/>
+				<input type="file" id="search2"/>
+				<button>Enviar a Mongoose</button>
+			</form>
+			<div class="block" id="search-res"></div>
+		</div>
+	</body>
+</html>
+
+<script>
+$(document).ready(function(){
+$('#form-search').submit(function(){
+	$('#search').change(function(){
+	    //on change event
+	    formdata = new FormData();
+	    if($(this).prop('files').length > 0)
+	    {
+	        file =$(this).prop('files')[0];
+	        formdata.append(file);
+	    }
+	});
+
+	$('#search2').change(function(){
+	    //on change event
+	    formdata = new FormData();
+	    if($(this).prop('files').length > 0)
+	    {
+	        file =$(this).prop('files')[0];
+	        formdata.append(file);
+	    }
+	});
+
+
+	jQuery.ajax({
+	    url: "/search",
+	    type: "GET",
+	    data: formdata,
+	    processData: false,
+	    contentType: false,
+	    success: function (result) {
+	         // if all is well
+	         // play the audio file
+	    }
+	});
+});
+
+/*
+	$("#search-res").hide();
+	$('#form-search').submit(function(){
+		$("#search-res").show();
+		$("#search-res").html("<img src='load.gif' width=50/>");
+		$.ajax({
+			type: "POST",
+			url: "/search",
+			data:{
+				query:$("#search").val()
+				query:$("#search2").val()
+			},
+			success: function(data){
+				$("#search-res").html(data);
+			}
+		});
+		return false;
+	});*/
+
+
+});
+</script>
+
+<style>
+	h1{
+		color:#009D9D;
+	}
+	body{
+		background-color:#004242;
+	}
+	.block{
+		background-color:#006D6D;
+		padding:20px;
+		margin-left:25%;
+		margin-right:25%;
+		border-radius:10px;
+	}
+	button{
+		background-color:#005959;
+		border:0;
+		padding:10px;
+		border-radius:10px;
+		color:#009D9D;
+	}
+	#search{
+		height:40px;
+		font-size:20px;
+		width:300px;
+		border-radius:10px;
+	}
+</style>
