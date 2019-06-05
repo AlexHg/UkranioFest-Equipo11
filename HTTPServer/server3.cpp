@@ -13,29 +13,28 @@ static struct mg_serve_http_opts s_http_server_opts;
 
 
 static void handle_size(struct mg_connection *nc, struct http_message *hm) {
-		char query[256];
+	char query[256];
 
-		mg_get_http_var(&hm->body, "query", query,sizeof(query));
-		sprintf(query, "Longitud de la cadena = %d caracteres", (int)strlen(query));
-		printf("Cadena enviada: %s\n", query);
-		int num[2];
-	  num[0]=2;
-	  num[1]=5;
-	  PaqueteDatagrama p((char*)num,sizeof(num),query,7200);
-	  cout<<"Test "<<num<<"\n";
-	  SocketDatagrama s(0);
-		s.setBroadcast();
-		s.envia(p);
-	  while(1){
-	  	PaqueteDatagrama r(sizeof(num));
-	  	int res=s.recibe(r);
+	mg_get_http_var(&hm->body, "query", query,sizeof(query));
+	sprintf(query, "Longitud de la cadena = %d caracteres", (int)strlen(query));
+	printf("Cadena enviada: %s\n", query);
+	int num[2];
+	num[0]=2;
+	num[1]=5;
+	PaqueteDatagrama p((char*)num,sizeof(num),query,7200);
+	cout<<"Test "<<num<<"\n";
+	SocketDatagrama s(0);
+	s.setBroadcast();
+	s.envia(p);
+	while(1){
+		PaqueteDatagrama r(sizeof(num));
+		int res=s.recibe(r);
 		if(res!=-1)
 			cout<<"Direccion IP: " <<r.obtieneDireccion()<<"\n";
+	}
 
-	  }
-
-		mg_send_head(nc,200,strlen(query), "Content-Type: text/plain");
-		mg_printf(nc, "%s", query);
+	mg_send_head(nc,200,strlen(query), "Content-Type: text/plain");
+	mg_printf(nc, "%s", query);
 }
 
 static void ev_handler(struct mg_connection *nc, int ev, void *p) {
@@ -55,7 +54,7 @@ static void ev_handler(struct mg_connection *nc, int ev, void *p) {
 			std::cout << "Archivo1: " << file1 << '\n';
 			std::cout << "Archivo2: " << file2 << '\n';
 
-		  handle_size(nc, hm);
+		  	handle_size(nc, hm);
 		}else{
 			mg_serve_http(nc, (struct http_message *) p, s_http_server_opts);
 		}
